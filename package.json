@@ -4,7 +4,8 @@
   "description": "Shortens urls",
   "main": "server.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/mtso/url-shortener/issues"
   },
-  "homepage": "https://github.com/mtso/url-shortener#readme"
+  "homepage": "https://github.com/mtso/url-shortener#readme",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "marked": "^0.3.6",
+    "mongoose": "^4.9.1"
+  }
 }
