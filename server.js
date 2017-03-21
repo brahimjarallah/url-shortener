@@ -1,6 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 const fs = require('fs');
 const marked = require('marked');
 
@@ -12,17 +11,13 @@ const app = express();
 const readme = fs.readFileSync('./README.md').toString();
 const index = marked(readme);
 
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
-
 const newRoute = express.Router();
 
 newRoute.route('/*')
   .get(urlController.new);
 
 app.use('/new/*', newRoute);
-// app.use('/', (_, res) => res.send(index));
+app.use('/', (_, res) => res.send(index));
 
 const port = process.env.PORT || 3750;
 app.listen(port);

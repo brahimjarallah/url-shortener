@@ -7,8 +7,23 @@ const CounterSchema = new mongoose.Schema({
   },
   value: {
     type: Number,
-    default: 1001
+    default: 1000
   }
 });
 
-module.exports = mongoose.model('counter', CounterSchema);
+const Counter = mongoose.model('counter', CounterSchema);
+
+// Seed counter to start at 1000
+
+Counter.update(
+  {_id: 'counter'}, 
+  {}, 
+  {upsert: true, setDefaultsOnInsert: true}, 
+  function(err) {
+    if (err) {
+      console.error(err);
+    }
+  }
+);
+
+module.exports = Counter;

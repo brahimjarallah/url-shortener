@@ -14,13 +14,23 @@ const UrlSchema = new mongoose.Schema({
 
 UrlSchema.pre('save', function(next) {
   const newUrl = this;
-  counter.findByIdAndUpdate({_id: 'counter'}, {$inc: {value: 1}}, {upsert: true}, function(err, count) {
+  const options = {
+    new: true,
+    upsert: true,
+  };
+  counter.findByIdAndUpdate(
+    {_id: 'counter'},
+    {$inc: {value: 1}},
+    options, 
+    setUrlId
+  );
+  function setUrlId(err, count) {
     if (err) {
       return next(err);
     }
     newUrl._id = count.value;
     next();
-  });
+  }
 });
 
 module.exports = mongoose.model('url', UrlSchema);
