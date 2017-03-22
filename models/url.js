@@ -3,8 +3,7 @@ const counter = require('./counter');
 
 const UrlSchema = new mongoose.Schema({
   _id: {
-    type: Number,
-    // required: true
+    type: Number
   },
   original: {
     type: String,

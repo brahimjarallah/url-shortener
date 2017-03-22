@@ -12,11 +12,16 @@ const readme = fs.readFileSync('./README.md').toString();
 const index = marked(readme);
 
 const newRoute = express.Router();
+const redirectRoute = express.Router();
 
 newRoute.route('/*')
   .get(urlController.new);
 
+redirectRoute.route('/:id')
+  .get(urlController.redirect);
+
 app.use('/new/*', newRoute);
+app.use('/', redirectRoute);
 app.use('/', (_, res) => res.send(index));
 
 const port = process.env.PORT || 3750;

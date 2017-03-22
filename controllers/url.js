@@ -19,6 +19,26 @@ module.exports.new = function(req, res) {
   });
 };
 
+module.exports.redirect = function(req, res, next) {
+  if (!req.params.id) {
+    return res.redirect('/');
+  }
+  Url.find(
+    {_id: req.params.id},
+    function(err, data) {
+      if (err) {
+        return res.json({
+          error: 'No short url found for given input'
+        });
+
+      } else {
+        const url = data[0];
+        res.redirect(301, url.original);
+      }
+    }
+  );
+}
+
 function makeShortUrl(req, id) {
   return url.format({
     protocol: req.protocol,
