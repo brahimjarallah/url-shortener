@@ -4,6 +4,10 @@ const url = require('url');
 const Url = require('../models/url');
 
 module.exports.new = function(req, res) {
+  console.log(res.originalUrl);
+  if (!req.originalUrl) {
+    return res.redirect('/');
+  }
   const url = new Url({
     original: req.originalUrl.slice(5)
   });
@@ -26,7 +30,7 @@ module.exports.redirect = function(req, res, next) {
   Url.find(
     {_id: req.params.id},
     function(err, data) {
-      if (err) {
+      if (err || data.length === 0) {
         return res.json({
           error: 'No short url found for given input'
         });

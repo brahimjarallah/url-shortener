@@ -20,7 +20,9 @@ newRoute.route('/*')
 redirectRoute.route('/:id')
   .get(urlController.redirect);
 
+app.use('/new/$', (_, res) => res.redirect('/'));
 app.use('/new/*', newRoute);
+app.use('/new', (_, res) => res.redirect('/'));
 app.use('/', redirectRoute);
 app.use('/', (_, res) => res.send(index));
 
