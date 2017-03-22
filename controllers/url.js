@@ -3,13 +3,21 @@ const os = require('os');
 const url = require('url');
 const Url = require('../models/url');
 
+// From: http://stackoverflow.com/questions/161738
+const URL_PATTERN = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/;
+
 module.exports.new = function(req, res) {
-  console.log(res.originalUrl);
   if (!req.originalUrl) {
     return res.redirect('/');
   }
+  const rawUrl = req.originalUrl.slice(5);
+  if (!validate(rawUrl)) {
+    return res.json({
+      error: 'Wrong url format, make sure you have a valid protocol and real site.'
+    });
+  }
   const url = new Url({
-    original: req.originalUrl.slice(5)
+    original: rawUrl
   });
   url.save(function(err, url) {
     if (err) {
@@ -49,4 +57,8 @@ function makeShortUrl(req, id) {
     host: req.get('Host'),
     pathname: String(id)
   });
+}
+
+function validate(potentialUrl) {
+  return potentialUrl.match(URL_PATTERN);
 }
